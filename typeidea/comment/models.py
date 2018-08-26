@@ -6,7 +6,7 @@ from django.db import models
 
 from blog.models import Post
 
-class Comment(models.Module):
+class Comment(models.Model):
      post = models.ForeignKey(Post,verbose_name="文章")
      comment = models.CharField(max_length=2000,verbose_name="内容")
      nickname = models.CharField(max_length=50,verbose_name="昵称")
