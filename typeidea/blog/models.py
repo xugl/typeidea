@@ -23,6 +23,10 @@ class Post(models.Model):
      class Meta:
          verbose_name = verbose_name_plural = "文章"
 
+#post = Post.objects.all().defer('content')  --> select id,title from blog_post;
+#post = Post.objects.all().only('title')     --> select title from blog_post;
+
+
 class Category(models.Model):
      STATUS_ITEMS = (
          (1,'可用'),
