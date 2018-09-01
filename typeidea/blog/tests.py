@@ -28,6 +28,7 @@ class TestCategory(TestCase):
 
     @override_settings(DEBUG=True)
     def test_filter(self):
+        #Q操作
         categories = Category.objects.filter(
             (Q(id=1) & Q(id=2))
         )
@@ -35,9 +36,11 @@ class TestCategory(TestCase):
 
 
         print('===='*10)
+        #F操作
         category = Category.objects.filter(id=1).update(status=F('status')+1)
 
 
+        #注入操作
         # users = User.objects.filter(username='the5fire').annotate(cate_count=Count('category'))
         user = User.objects.annotate(cate_count=Count('category')).get(username='the5fire')
         print(user.cate_count)
@@ -45,4 +48,22 @@ class TestCategory(TestCase):
         user = User.objects.annotate(cate_count=Sum('category__status')).get(username='the5fire')
         print(user.cate_count)
         pp(connection.queries)
+
+
+    @override_settings(DEBUG=True)
+    def test_values(self):
+        categories = Category.objects.values('name')
+        print(categories)
+
+        categories = Category.objects.values_list('name')
+        print(categories)
+        for cate in categories:
+            name=cate[0]
+            print(name)
+
+        categories = Category.objects.values_list('name',flat=True)
+        print(categories)
+        for cate_name in categories:
+            print(cate_name)
+
 
