@@ -5,6 +5,7 @@ from __future__ import print_function
 from pprint import pprint as pp
 
 from django.db import connection
+from django.db.models import Q,F,Count,Sum
 from django.contrib.auth.models import User
 from django.test.utils import override_settings
 from django.test import TestCase
@@ -15,22 +16,33 @@ from .models import Category
 
 
 class TestCategory(TestCase):
-    #@override_settings(DEBUG=True)
+    @override_settings(DEBUG=True)
     def setUp(self):
-        user = User.objects.create_user('the5fire','fake@email.com','password')
-        for i in range(10):
-            category_name = 'cate_%s' % i
-            Category.objects.create(name=category_name,owner=user)
+        user = self.user = User.objects.create_user('the5fire','fake@email.com','password')
+
+        Category.objects.bulk_create([
+            Category(name='cate_buck_%s' % i ,owner=user)
+            for i in range(10)
+        ])
+        #pp(connection.queries)
 
     @override_settings(DEBUG=True)
     def test_filter(self):
-        categories = Category.objects.all()
-        #print(len(categories))
-        print(categories.count())
-        categories = categories.filter(status=1)
-        print(list(categories))
-        print('--------')
+        categories = Category.objects.filter(
+            (Q(id=1) & Q(id=2))
+        )
+        print(categories)
+
+
+        print('===='*10)
+        category = Category.objects.filter(id=1).update(status=F('status')+1)
+
+
+        # users = User.objects.filter(username='the5fire').annotate(cate_count=Count('category'))
+        user = User.objects.annotate(cate_count=Count('category')).get(username='the5fire')
+        print(user.cate_count)
+
+        user = User.objects.annotate(cate_count=Sum('category__status')).get(username='the5fire')
+        print(user.cate_count)
         pp(connection.queries)
-        print('---------')
-        print(len(categories))
 

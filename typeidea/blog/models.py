@@ -20,6 +20,9 @@ class Post(models.Model):
      #lasted_update_time = models.DateTimeField(auto_now=True, verbose_name="更新时间")  #auto_now=True 每次更新记录时，赋予当前值。
      content = models.TextField(verbose_name="内容",help_text="注: 正文必须为MarkDown格式")
 
+     def __unicode__(self):
+         return self.name
+
      class Meta:
          verbose_name = verbose_name_plural = "文章"
 
@@ -39,8 +42,13 @@ class Category(models.Model):
      owner = models.ForeignKey(User, verbose_name="作者")
      created_time = models.DateTimeField(auto_now_add=True, verbose_name="创建时间")
 
+     def __unicode__(self):
+         return self.name
+
      class Meta:
          verbose_name = verbose_name_plural = '分类'
+         #ordering = ('id','created_time')
+         #get_latest_by = ('id')
 
 class Tag(models.Model):
     STATUS_ITEMS = (
