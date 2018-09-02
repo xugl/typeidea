@@ -21,7 +21,10 @@ class Post(models.Model):
      content = models.TextField(verbose_name="内容",help_text="注: 正文必须为MarkDown格式")
 
      def __unicode__(self):
-         return self.name
+         return self.title
+
+     def __str__(self):
+         return self.title
 
      class Meta:
          verbose_name = verbose_name_plural = "文章"
@@ -45,6 +48,9 @@ class Category(models.Model):
      def __unicode__(self):
          return self.name
 
+     def __str__(self):
+         return self.name
+
      class Meta:
          verbose_name = verbose_name_plural = '分类'
          #ordering = ('id','created_time')
@@ -61,6 +67,9 @@ class Tag(models.Model):
     created_time = models.DateTimeField(auto_now_add=True, verbose_name="创建时间")
 
     def __unicode__(self):
+        return self.name
+
+    def __str__(self):
         return self.name
 
     class Meta:
