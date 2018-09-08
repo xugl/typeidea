@@ -18,6 +18,15 @@ class Post(models.Model):
      owner = models.ForeignKey(User,verbose_name="作者")
      created_time = models.DateTimeField(auto_now_add=True, verbose_name="创建时间")   #auto_now_add=True 每次增加记录时，赋予当前值
      #lasted_update_time = models.DateTimeField(auto_now=True, verbose_name="更新时间")  #auto_now=True 每次更新记录时，赋予当前值。
+
+     #自定义字段展示
+     #@property
+     def status_show(self):
+         return '当前状态: %s' % self.status
+
+     status_show.short_description = '展示状态'
+
+
      content = models.TextField(verbose_name="内容",help_text="注: 正文必须为MarkDown格式")
 
      def __unicode__(self):
