@@ -7,15 +7,17 @@ from django.core.urlresolvers import reverse
 
 from .models import Post,Category,Tag
 
-
 from typeidea.custom_site import custom_site
-
+from .adminforms import  PostAdminForm
 
 @admin.register(Post,site=custom_site)
 class PostAdmin(admin.ModelAdmin):
-    list_display = ['title','category','status_show','owner','created_time','operator']
+    list_display = [
+        'title','category','status_show','status',
+        'owner','created_time','operator'
+    ]
     #list_display_links = ['category', 'status']
-
+    form = PostAdminForm
     list_filter = ['category']
     search_fields = ['title','category__name','owner__username']
     save_on_top = True
@@ -34,7 +36,12 @@ class PostAdmin(admin.ModelAdmin):
     #exclude =('owner',)   #不展示哪个字段
     fieldsets = (  # 跟fields互斥
         ('基础配置', {
-            'fields': (('category', 'title'), 'content')
+            'fields': (
+                ('category', 'title'),
+                'desc',
+                'status',
+                'content',
+            )
         }),
         ('高级配置', {
             'classes': ('collapse', 'addon'),  #展示高级配置选项
@@ -54,10 +61,23 @@ class PostAdmin(admin.ModelAdmin):
     operator.empty_value_display = '???'
 
 
+    def save_model(self, request, obj, form, change):
+        obj.owner = request.user
+        super(PostAdmin,self).save_model(request, obj, form, change)
+
+class PostInlineAdmin(admin.TabularInline):
+    fields = ['title','status']
+    #extra = 2  # 控制额外多几个
+    min_num = 4
+    #max_num = 4
+    model = Post
+
 
 @admin.register(Category,site=custom_site)
 class CategoryAdmin(admin.ModelAdmin):
-    pass
+    inlines = [
+        PostInlineAdmin,
+    ]
 
 @admin.register(Tag,site=custom_site)
 class TagAdmin(admin.ModelAdmin):

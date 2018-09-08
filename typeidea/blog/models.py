@@ -6,8 +6,8 @@ from django.contrib.auth.models import User
 
 class Post(models.Model):
      STATUS_ITEMS = (
-        (1, '正常'),
-        (2, '删除'),
+        (1, '上线'),
+      #  (2, '删除'),
         (3, '草稿'),
      )
      title = models.CharField(max_length=50,blank=False,verbose_name="标题")  #blank=False 意思是form不能填空
