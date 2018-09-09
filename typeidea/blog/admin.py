@@ -8,7 +8,7 @@ from django.core.urlresolvers import reverse
 from .models import Post,Category,Tag
 
 from typeidea.custom_site import custom_site
-from .adminforms import  PostAdminForm
+from .adminforms import  PostAdminForm,CategoryAdminForm,TagAdminForm
 
 @admin.register(Post,site=custom_site)
 class PostAdmin(admin.ModelAdmin):
@@ -67,22 +67,107 @@ class PostAdmin(admin.ModelAdmin):
 
 class PostInlineAdmin(admin.TabularInline):
     fields = ['title','status']
-    #extra = 2  # 控制额外多几个
-    min_num = 4
-    #max_num = 4
+    extra = 1  # 控制额外多几个
+    # min_num = 4
+    # max_num = 4
     model = Post
 
 
 @admin.register(Category,site=custom_site)
 class CategoryAdmin(admin.ModelAdmin):
-    inlines = [
-        PostInlineAdmin,
+    # inlines = [
+    #     PostInlineAdmin
+    # ]
+    form = CategoryAdminForm
+    list_display = [
+        'name','status','status_show','is_nav',
+        'owner','created_time','operator'
     ]
+    list_filter = ['is_nav','created_time']
+    search_fields = ['status','owner__username']
+    actions_on_top = True
+    actions_on_bottom = True
+    show_full_result_count = False
+    date_hierarchy = 'created_time'
+
+    # 编辑页面
+    save_on_top = True
+    fieldsets = (  # 跟fields互斥
+        ('基础配置', {
+            'fields': (
+                'name',
+            )
+        }),
+        ('高级配置', {
+            'classes': ('collapse', 'addon'),  # 展示高级配置选项
+            'fields': (
+                'is_nav',
+                'status',
+            )
+        }),
+    )
+
+    def operator(self,obj):
+        return format_html(
+            '<a href="{}">删除</a>',
+            reverse('cus_admin:blog_category_delete', args=(obj.id,))
+            )
+    operator.short_description = '操作'
+    operator.empty_value_display = '???'
+
+    def save_model(self, request, obj, form, change):
+        print(self, request, obj, form, change)
+        obj.owner = request.user
+        super(CategoryAdmin,self).save_model(request, obj, form,change)
+
+
 
 @admin.register(Tag,site=custom_site)
 class TagAdmin(admin.ModelAdmin):
-    pass
+    list_display = [
+        'name','status','status_show','owner',
+        'created_time','operator'
+    ]
+    form = TagAdminForm
+    list_filter = ['created_time']
+    search_fields = ['status','owner__username']
+    actions_on_top = True
+    actions_on_bottom = True
+    show_full_result_count = False
+    date_hierarchy = 'created_time'
+    # 编辑页面
+    save_on_top = True
+    fieldsets = (  # 跟fields互斥
+        ('基础配置', {
+            'fields': (
+                'name',
+            )
+        }),
+        ('高级配置', {
+            'classes': ('collapse', 'addon'),  # 展示高级配置选项
+            'fields': (
+                'status',
+            )
+        }),
+    )
 
+    def status_show(self,obj):
+        return "当前状态: %s" % obj.status
+    status_show.short_description = '状态展示'
+
+
+    def save_model(self, request, obj, form, change):
+        obj.owner = request.user
+        super(TagAdmin,self).save_model(request, obj, form,change)
+
+
+    def operator(self,obj):
+        return format_html(
+            "<a href={}>删除</a>",
+            reverse('cus_admin:blog_tag_delete', args=(obj.id,))
+            )
+    operator.short_description = '操作'
+    operator.empty_value_display = '???'
 
 
 #admin.site.register(Post,PostAdmin)
