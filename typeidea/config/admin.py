@@ -48,9 +48,6 @@ class LinkAdmin(BaseOwnerAdmin):
             reverse("cus_admin:config_link_delete", args=(obj.id,))
         )
 
-    def save_model(self, request, obj, form, change):
-        obj.owner = request.user
-        super(LinkAdmin, self).save_model(request, obj, form, change)
 
 
 
@@ -78,8 +75,3 @@ class SideBarAdmin(BaseOwnerAdmin):
             reverse("cus_admin:config_sidebar_delete", args=(obj.id,))
         )
     operator.short_description = "操作"
-
-    def save_model(self, request, obj, form, change):
-        obj.owner = request.user
-        super(SideBarAdmin, self).save_model(request, obj, form, change)
-

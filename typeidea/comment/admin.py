@@ -43,7 +43,4 @@ class CommentAdmin(BaseOwnerAdmin):
         )
     operator.short_description = "操作"
 
-    def save_model(self, request, obj, form, change):
-        obj.owner = request.user
-        super(CommentAdmin, self).save_model(request, obj, form, change)
 
