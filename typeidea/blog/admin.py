@@ -62,9 +62,6 @@ class PostAdmin(BaseOwnerAdmin):
     operator.empty_value_display = '???'
 
 
-    def save_model(self, request, obj, form, change):
-        obj.owner = request.user
-        super(PostAdmin,self).save_model(request, obj, form, change)
 
 class PostInlineAdmin(admin.TabularInline):
     fields = ['title','status']
@@ -75,7 +72,7 @@ class PostInlineAdmin(admin.TabularInline):
 
 
 @admin.register(Category,site=custom_site)
-class CategoryAdmin(admin.ModelAdmin):
+class CategoryAdmin(BaseOwnerAdmin):
     # inlines = [
     #     PostInlineAdmin
     # ]
