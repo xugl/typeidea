@@ -113,15 +113,11 @@ class CategoryAdmin(BaseOwnerAdmin):
     operator.short_description = '操作'
     operator.empty_value_display = '???'
 
-    def save_model(self, request, obj, form, change):
-        print(self, request, obj, form, change)
-        obj.owner = request.user
-        super(CategoryAdmin,self).save_model(request, obj, form,change)
 
 
 
 @admin.register(Tag,site=custom_site)
-class TagAdmin(admin.ModelAdmin):
+class TagAdmin(BaseOwnerAdmin):
     list_display = [
         'name','status','status_show','owner',
         'created_time','operator'
@@ -153,10 +149,6 @@ class TagAdmin(admin.ModelAdmin):
         return "当前状态: %s" % obj.status
     status_show.short_description = '状态展示'
 
-
-    def save_model(self, request, obj, form, change):
-        obj.owner = request.user
-        super(TagAdmin,self).save_model(request, obj, form,change)
 
 
     def operator(self,obj):
