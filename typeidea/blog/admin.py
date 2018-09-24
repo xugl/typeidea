@@ -8,10 +8,11 @@ from django.core.urlresolvers import reverse
 from .models import Post,Category,Tag
 
 from typeidea.custom_site import custom_site
+from typeidea.custom_admin import BaseOwnerAdmin
 from .adminforms import  PostAdminForm,CategoryAdminForm,TagAdminForm
 
 @admin.register(Post,site=custom_site)
-class PostAdmin(admin.ModelAdmin):
+class PostAdmin(BaseOwnerAdmin):
     list_display = [
         'title','category','status_show','status',
         'owner','created_time','operator'
