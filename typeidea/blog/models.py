@@ -13,7 +13,7 @@ class Post(models.Model):
      title = models.CharField(max_length=50,blank=False,verbose_name="标题")  #blank=False 意思是form不能填空
      desc = models.CharField(max_length=1024, blank=True, verbose_name="摘要")
      category = models.ForeignKey('Category',verbose_name="分类")
-     tags = models.ManyToManyField('Tag',verbose_name="标签")
+     tags = models.ManyToManyField('Tag',related_name='posts',verbose_name="标签")
      status = models.IntegerField(default=1,choices=STATUS_ITEMS,verbose_name="状态")
      owner = models.ForeignKey(User,verbose_name="作者")
      created_time = models.DateTimeField(auto_now_add=True, verbose_name="创建时间")   #auto_now_add=True 每次增加记录时，赋予当前值
