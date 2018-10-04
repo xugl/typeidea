@@ -11,6 +11,8 @@ from .models import Post, Tag, Category
 from config.models import SideBar
 from comment.models import Comment
 
+
+
 def get_common_context():
     categories = Category.objects.filter(status=1)  # 可用状态  todo: fix magic number
     nav_cates = []
