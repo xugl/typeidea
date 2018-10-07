@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Typeidea blog -by the5fire</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <style>
+        body{
+            background-color: #dbe2e9;
+        }
+        .fixed-top {
+            position: fixed;
+            right:0;
+            left:0;
+            border-width: 0 0 1px;
+
+        }
+        header {
+            height:50px;
+            background-color: #3d4450;
+            border-color: #080808;
+            line-height: 50px;
+        }
+        header nav a {
+            color:#fff;
+            padding: 0 1.5rem;
+        }
+        header nav a:hover{
+            text-decoration: none;
+            color: #fff;
+            background-color: #000;
+        }
+        header a.logo {
+            font-size: 1.5rem;
+            padding-left: 0;
+        }
+
+        header a.logo:hover {
+            background-color: #3d4450;
+        }
+
+        .main .left-side .inner {
+            background-color: #fff;
+            padding: 30px 10px;
+        }
+        .main  .right-side .inner {
+            background-color: #fff;
+        }
+
+        .post-element-nav {
+            padding-top: 0;
+            padding-bottom: 0;
+            color: #428bca;
+        }
+
+        .post-element-title {
+            font-size:25px;
+        }
+
+        .post-element-title a{
+            color: #333;
+            text-decoration: none;
+            border-bottom: 1px solid #ccc;
+
+        }
+        .post-element-desc  {
+          padding: 1rem;
+        }
+        .main {
+            margin-top: 100px;
+        }
+
+        .main ul {
+            padding-left: 0px;
+        }
+
+        .post-element article {
+            margin-top: 10px;
+        }
+        nav.category a {
+            margin-top: 20px;
+            margin-right: 10px;
+        }
+        .power{
+            margin-top: 30px;
+        }
+        .sidebar li {
+            list-style: none;
+        }
+        .sidebar a {
+            color: #444;
+        }
+
+        .sidebar-title {
+            height:30px;
+            background-color: #3d4450;
+            border-color: #080808;
+            line-height: 30px;
+            color:#fff;
+            padding: 0 9px;
+        }
+
+        .sidebar-content {
+            padding: 0 9px;
+        }
+    </style>
+</head>
+
+<body>
+<header class="fixed-top">
+    <div class="container">
+        <nav class="nav">
+            <a class="logo" href="/">Typeidea</a>
+            <a class="index" href="/">首页</a>
+            {% for cate in nav_cates %}
+                <a class="link" href="{% url 'category' cate.id %}">{{ cate.name }}</a>
+            {% endfor %}
+        </nav>
+    </div>
+</header>
+
+
+<div class="container main">
+    <div class="row">
+        <div class="col-9 left-side">
+            <div class="inner">
+                {% block content %}
+                {% endblock %}
+            </div>
+        </div>
+        <div class="col-3 right-side">
+            <div class="inner">
+                {% for side in side_bars %}
+                    <div class="sidebar">
+                        <div class="sidebar-title">{{ side.title }}</div>
+                        <div class="sidebar-content">
+                            {% if side.display_type == 1 %}
+                                {% autoescape off %}
+                                    {{ side.content }}
+                                {% endautoescape %}
+                            {% elif side.display_type == 2 %}
+                                <ul>
+                                    {% for post in recently_posts %}
+                                        <li><a href="{% url 'detail' post.id %}">{{ post.title }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            {% elif side.display_type == 4 %}
+                                <ul>
+                                    {% for comments in recently_comments %}
+                                        <li>{{ comments.comment }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <hr />
+        <nav class="nav category">
+            {% for cate in cates %}
+                <a href="{% url 'category' cate.id %}">{{ cate.name }} &nbsp;</a>
+            {% endfor %}
+        </nav>
+    </div>
+    <div class="container power">
+        <span class="text-muted">Power by Typeidea@the5fire</span>
+    </div>
+</footer>
+</body>

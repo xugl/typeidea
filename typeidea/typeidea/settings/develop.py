@@ -7,10 +7,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-# INSTALLED_APPS += [
-#     'debug_toolbar',
-# ]
-
 
 DATABASES = {
     'default': {
@@ -18,3 +14,4 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
