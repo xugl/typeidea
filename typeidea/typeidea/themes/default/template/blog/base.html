@@ -16,13 +16,26 @@
 <body>
 <header class="fixed-top">
     <div class="container">
-        <nav class="nav">
-            <a class="logo" href="/">Typeidea</a>
-            <a class="index" href="/">首页</a>
-            {% for cate in nav_cates %}
-                <a class="link" href="{% url 'category' cate.id %}">{{ cate.name }}</a>
-            {% endfor %}
-        </nav>
+        <div class="row">
+            <div class="col-9">
+                <nav class="nav">
+                    <a class="logo" href="/">Typeidea</a>
+                    <a class="index" href="/">首页</a>
+                    {% for cate in nav_cates %}
+                        <a class="link" href="{% url 'category' cate.id %}">{{ cate.name }}</a>
+                    {% endfor %}
+                </nav>
+            </div>
+
+            <div class="col-3 ">
+                <div class="input-group search">
+                    <input type="text" class="form-control" placeholder="Search for..." aria-label="Search for...">
+                    <span class="input-group-btn">
+                        <button class="btn btn-secondary" type="button">Go!</button>
+                    </span>
+                </div>
+            </div>
+        </div>
     </div>
 </header>
 
@@ -68,7 +81,7 @@
 
 <footer class="footer">
     <div class="container">
-        <hr />
+        <hr/>
         <nav class="nav category">
             {% for cate in cates %}
                 <a href="{% url 'category' cate.id %}">{{ cate.name }} &nbsp;</a>
