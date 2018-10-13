@@ -17,7 +17,7 @@ from adminforms import  CommentAdminForm
 @admin.register(Comment,site=custom_site)
 class CommentAdmin(BaseOwnerAdmin):
     list_display = [
-        'post','comment','nickname','website',
+        'target','content','nickname','website',
         'email','created_timed_show','operator'
     ]
     form = CommentAdminForm
@@ -28,7 +28,7 @@ class CommentAdmin(BaseOwnerAdmin):
     # 编辑页面
     save_on_top = True
     fields = (
-        'post','comment','nickname','website',
+        'post','content','nickname','website',
         'email',
     )
 

@@ -10,6 +10,7 @@ from django.views.generic import ListView,DetailView
 from .models import Post, Tag, Category
 from config.models import SideBar
 from comment.models import Comment
+from comment.forms import CommentForm
 
 class CommonMixin(object):
     def get_context_data(self,**kwargs):
@@ -41,7 +42,26 @@ class BasePostsView(CommonMixin,ListView):
     paginate_by = 4
 
 class IndexView(BasePostsView):
-     pass
+    def get_queryset(self):
+        query = self.request.GET.get('query')
+        qs = super(IndexView, self).get_queryset()
+        if query:
+            return qs.filter(title__icontains=query)
+        return qs   # select * from blog_post where title ilike '%query%'
+
+    def get_context_data(self, **kwargs):
+        query = self.request.GET.get('query')
+        return super(IndexView, self).get_context_data(query=query)
+
+
+class AuthorView(BasePostsView):
+    def get_queryset(self):
+        author_id = self.kwargs.get('author_id')
+        qs = super(AuthorView,self).get_queryset()
+        if author_id:
+            qs = qs.filter(owner_id=author_id)
+        return qs
+
 
 class CategoryView(BasePostsView):
     def get_queryset(self):
@@ -64,3 +84,10 @@ class PostView(CommonMixin,DetailView):
     model = Post
     template_name = 'blog/detail.html'
     context_object_name = 'post'
+
+    def get_context_data(self,**kwargs):
+        kwargs.update({
+            'comment_form':CommentForm()
+        })
+        return super(PostView,self).get_context_data(**kwargs)
+

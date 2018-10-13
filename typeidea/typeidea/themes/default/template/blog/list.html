@@ -2,6 +2,13 @@
 
 {% block content %}
 
+    {% if query %}
+        {% autoescape off %}
+        您搜索的关键词: {{ query }} 的结果如下:
+        {% endautoescape %}
+        <hr/>
+    {% endif %}
+
     {% if posts %}
         {% for post in posts %}
             <div class="post-element">
@@ -17,7 +24,7 @@
                             {{ tag.name }}
                         {% endfor %}
                         </a>
-                        作者:<a class="nav-link post-element-nav" href="#">{{ post.owner.username }}</a>
+                        作者:<a class="nav-link post-element-nav" href="{% url 'author' post.owner_id %}">{{ post.owner.username }}</a>
                         创建时间:<a class="nav-link post-element-nav" href="#">{{ post.created_time }}</a>
                     </nav>
                 </div>
@@ -26,9 +33,25 @@
                 </div>
             </div>
         {% endfor %}
-        {% if page_obj.has_previous %}  <a href="?page={{ page_obj.previous_page_number }}">上一页</a>  {% endif %}
-        Page {{ page_obj.number }} of {{ paginator.num_pages }}.
-        {% if page_obj.has_next %}  <a href="?page={{ page_obj.next_page_number }}">下一页</a>  {% endif %}
+
+    {% if page_obj.has_previous %}
+        {% if query %}
+            <a href="?page={{ page_obj.previous_page_number }}&query={{ query }}"> 上一页 </a>
+        {% else %}
+            <a href="?page={{page_obj.previous_page_number}}">上一页</a>
+        {% endif %}
+    {% endif %}
+
+    Page {{page_obj.number}} of {{paginator.num_pages}}
+
+    {% if page_obj.has_next %}
+        {% if query %}
+            <a href="?page={{ page_obj.next_page_number}}&query={{query}}">下一页</a>
+        {% else %}
+            <a href="?page={{ page_obj.next_page_number}}">下一页</a>
+        {% endif %}
+    {% endif %}
+
     {% else %}
         Empty!!!
     {% endif %}
