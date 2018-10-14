@@ -6,11 +6,8 @@ from django.contrib import admin
 from .models import Comment
 from typeidea.custom_site import custom_site
 from typeidea.custom_admin import BaseOwnerAdmin
-
-
 from django.utils.html import format_html
 from django.core.urlresolvers import reverse
-
 
 from adminforms import  CommentAdminForm
 

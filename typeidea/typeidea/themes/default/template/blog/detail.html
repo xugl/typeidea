@@ -35,7 +35,6 @@
         <div class="comment">
             <form action="/comment/" method="POST" class="form-group" style="width: 60%;">
                 {% csrf_token %}
-                <input type="hidden" name="target" value="{{request.path}}"/>
                 {{ comment_form }}
                 <input type="submit" value="写好了!">
             </form>
