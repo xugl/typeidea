@@ -13,8 +13,11 @@ class CommentView(TemplateView):
 
     def post(self,request,*args,**kwargs):
         comment_form = CommentForm(request.POST)
+        target = request.POST.get('target')
         if comment_form.is_valid():
-            comment_form.save()
+            instance = comment_form.save(commit=False)
+            instance.target = target
+            instance.save()
             succeed = True
         else:
             succeed = False
