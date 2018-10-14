@@ -18,10 +18,10 @@ class Comment(models.Model):
      created_time = models.DateTimeField(auto_now_add=True,verbose_name="创建时间")
 
      def __unicode__(self):
-          return self.comment
+          return self.content
 
      def __str__(self):
-          return self.comment
+          return self.content
      #owner = models.ForeignKey(User,verbose_name='用户')  不需要写，因为可以通过post 获取 user.
      class Meta:
          verbose_name = verbose_name_plural = "评论"

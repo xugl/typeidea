@@ -29,8 +29,8 @@ urlpatterns = [
     url(r'^tag/(?P<tag_id>\d+)/$',TagView.as_view(),name='tag'),
     url(r'^author/(?P<author_id>\d+)/$', AuthorView.as_view(), name='author'),
     url(r'^post/(?P<pk>\d+)/$',PostView.as_view() ,name='detail'),
-    url(r'^admin/', admin.site.urls),
-    url(r'^links/', LinkView.as_view(),name='links'),
+    url(r'^links/$', LinkView.as_view(),name='links'),
     url(r'^comment/$', CommentView.as_view(), name='comment'),
+    url(r'^admin/', admin.site.urls),
     url(r'^cust_admin/', custom_site.urls),
 ]

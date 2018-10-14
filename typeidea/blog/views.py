@@ -33,6 +33,7 @@ class CommonMixin(object):
             'recently_posts': recently_posts,
             'recently_comments': recently_comments,
         }
+        extra_context.update(kwargs)
         return super(CommonMixin, self).get_context_data(**extra_context)
 
 class BasePostsView(CommonMixin,ListView):

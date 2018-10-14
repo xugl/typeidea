@@ -28,7 +28,7 @@ class CommentAdmin(BaseOwnerAdmin):
     # 编辑页面
     save_on_top = True
     fields = (
-        'post','content','nickname','website',
+        'target','content','nickname','website',
         'email',
     )
 
