@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import unicode_literals
-
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 from .forms import CommentForm
@@ -22,8 +21,8 @@ class CommentShowMixin(object):
         return super(CommentShowMixin,self).get_context_data(**kwargs)
 
 
-
 class CommentView(TemplateView):
+    http_method_names = ['POST']
     template_name = 'comment/result.html'
 
     def post(self,request,*args,**kwargs):
