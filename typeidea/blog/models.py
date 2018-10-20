@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-
+import markdown
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -27,12 +27,19 @@ class Post(models.Model):
 
 
      content = models.TextField(verbose_name="内容",help_text="注: 正文必须为MarkDown格式")
+     html = models.TextField(verbose_name="渲染后的内容",default='',help_text="注: 正文必须为MarkDown格式")
+     is_markdown = models.BooleanField(verbose_name="使用markdown格式",default=True)
 
      def __unicode__(self):
          return self.title
 
      def __str__(self):
          return self.title
+
+     def save(self,*args,**kwargs):
+         if self.is_markdown:
+             self.html = markdown.markdown(self.content)
+         return super(Post,self).save(*args,**kwargs)
 
      class Meta:
          verbose_name = verbose_name_plural = "文章"
