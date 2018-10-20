@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import unicode_literals
-from django.shortcuts import render
+
+from django.shortcuts import redirect
 from django.views.generic import TemplateView
 from .forms import CommentForm
 from comment.models import Comment
-from django.shortcuts import redirect
 
 
 class CommentShowMixin(object):
@@ -35,10 +35,12 @@ class CommentView(TemplateView):
             instance.target = target
             instance.save()
             succeed = True
+            return redirect(target)
         else:
             succeed = False
         context = {
             'succeed': succeed,
             'form': comment_form,
+            'target': target
         }
         return self.render_to_response(context)
