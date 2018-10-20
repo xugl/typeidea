@@ -1,10 +1,12 @@
 <style>
-.errorlist {color:red}
+    .errorlist {
+        color: red
+    }
 </style>
 {% if succeed %}
     发布成功
 {% else %}
 
-{{ form }}
+    {{ form.errors }}
 
 {% endif %}
