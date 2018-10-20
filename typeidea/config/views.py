@@ -4,16 +4,10 @@ from __future__ import unicode_literals
 from blog.views import CommonMixin
 from django.views.generic import ListView,DetailView
 from .models import Link
-from comment.forms import CommentForm
+from comment.views import CommentShowMixin
 
 
-class LinkView(CommonMixin,ListView):
+class LinkView(CommonMixin,CommentShowMixin,ListView):
     queryset = Link.objects.filter(status=1)
     template_name = 'config/links.html'
     context_object_name = 'links'
-
-    def get_context_data(self,**kwargs):
-        kwargs.update({
-            'comment_form': CommentForm(),
-        })
-        return super(LinkView,self).get_context_data(**kwargs)

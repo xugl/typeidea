@@ -11,6 +11,7 @@ from .models import Post, Tag, Category
 from config.models import SideBar
 from comment.models import Comment
 from comment.forms import CommentForm
+from comment.views import CommentShowMixin
 
 class CommonMixin(object):
     def get_context_data(self,**kwargs):
@@ -81,14 +82,7 @@ class TagView(BasePostsView):
         posts = tag.posts.all()
         return posts
 
-class PostView(CommonMixin,DetailView):
+class PostView(CommonMixin,CommentShowMixin,DetailView):
     model = Post
     template_name = 'blog/detail.html'
     context_object_name = 'post'
-
-    def get_context_data(self,**kwargs):
-        kwargs.update({
-            'comment_form': CommentForm()
-        })
-        return super(PostView,self).get_context_data(**kwargs)
-

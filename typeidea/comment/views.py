@@ -7,6 +7,22 @@ from .forms import CommentForm
 from comment.models import Comment
 from django.shortcuts import redirect
 
+
+class CommentShowMixin(object):
+    def get_comments(self):
+        target = self.request.path
+        comments = Comment.objects.filter(target=target)
+        return comments
+
+    def get_context_data(self,**kwargs):
+        kwargs.update({
+            'comment_form': CommentForm(),
+            'comment_list':self.get_comments(),
+        })
+        return super(CommentShowMixin,self).get_context_data(**kwargs)
+
+
+
 class CommentView(TemplateView):
     template_name = 'comment/result.html'
 
