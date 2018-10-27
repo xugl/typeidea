@@ -14,7 +14,7 @@ from .adminforms import  PostAdminForm,CategoryAdminForm,TagAdminForm
 @admin.register(Post,site=custom_site)
 class PostAdmin(BaseOwnerAdmin):
     list_display = [
-        'title','category','status_show','status',
+        'title','category','status_show','status','pv','uv',
         'owner','created_time','operator'
     ]
     #list_display_links = ['category', 'status']

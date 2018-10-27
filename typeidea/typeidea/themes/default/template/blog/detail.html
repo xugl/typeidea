@@ -1,4 +1,15 @@
 {% extends "./base.html" %}
+{% load static %}
+
+{% block style %}
+    <link href="{% static 'css/prettify.css' %}" rel="stylesheet">
+    <style>
+        .linenums li {
+            background-color: none;
+        }
+    </style>
+{% endblock %}
+
 {% block content %}
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
@@ -11,7 +22,7 @@
 
     <div class="post-element">
         <h3 class="post-element-title">
-            {{ post.title }}
+            {{ post.title }}  --- {{ post.pv }} {{ post.uv }}
         </h3>
         <div>
             <nav class="nav">
@@ -36,4 +47,13 @@
 {% include  'comment/block.html' %}
 
 </div>
+{% endblock content %}
+
+{% block javascript %}
+    <script src="{% static 'js/prettify.js' %}"></script>
+    <script>
+        $('document').ready(function () {
+             PR.prettyPrint();
+         });
+    </script>
 {% endblock %}

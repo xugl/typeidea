@@ -6,6 +6,7 @@ from django.conf import settings
 from django.db import connection
 from django.core.paginator import Paginator, EmptyPage
 from django.views.generic import ListView,DetailView
+from django.core.cache import cache
 
 from .models import Post, Tag, Category
 from config.models import SideBar
@@ -25,13 +26,14 @@ class CommonMixin(object):
                 cates.append(cate)
         side_bars = SideBar.objects.filter(status=1)
         recently_posts = Post.objects.filter(status=1)[:10]
-        # hot_posts = Post.objects.filter(status=1).order_by('views')[:10]
+        hot_posts = Post.objects.filter(status=1).order_by('-pv')[:10]
         recently_comments = Comment.objects.filter(status=1)[:10]
         extra_context = {
             'nav_cates': nav_cates,
             'cates': cates,
             'side_bars': side_bars,
             'recently_posts': recently_posts,
+            'hot_posts': hot_posts,
             'recently_comments': recently_comments,
         }
         extra_context.update(kwargs)
@@ -82,7 +84,32 @@ class TagView(BasePostsView):
         posts = tag.posts.all()
         return posts
 
+
 class PostView(CommonMixin,CommentShowMixin,DetailView):
     model = Post
     template_name = 'blog/detail.html'
     context_object_name = 'post'
+
+    def get(self,request,*args,**kwargs):
+        response = super(PostView,self).get(self,request,*args,**kwargs)
+        self.pv_uv()
+        return response
+
+    def pv_uv(self):
+        #增加pv
+        #判断用户 增加uv
+        sessionid = self.request.COOKIES.get('sessionid')
+        if not sessionid:
+            return
+
+        # TODO: 判断用户是否在60s内访问过
+        pv_key = 'pv:%s:%s' % (sessionid, self.request.path)
+        if not cache.get(pv_key):
+            self.object.increase_pv()
+            cache.set(pv_key, 1, 60)
+
+        #TODO: 判断用户是否在24小时内访问过
+        uv_key = 'uv:%s:%s'% (sessionid,self.request.path)
+        if not cache.get(uv_key):
+            self.object.increase_uv()
+            cache.set(uv_key,1,60*60*24)

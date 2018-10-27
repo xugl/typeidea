@@ -10,6 +10,8 @@
 
     <link rel="stylesheet" href="{% static "css/base.css" %}">
 
+    {% block style %}
+    {% endblock %}
 </head>
 
 <body>
@@ -63,6 +65,12 @@
                                         <li><a href="{% url 'detail' post.id %}">{{ post.title }}</a></li>
                                     {% endfor %}
                                 </ul>
+                            {% elif side.display_type == 3 %}
+                                <ul>
+                                    {% for post in hot_posts %}
+                                        <li><a href="{% url 'detail' post.id %}">{{ post.title }} - {{ post.pv }}</a></li>
+                                    {% endfor %}
+                                </ul>
                             {% elif side.display_type == 4 %}
                                 <ul>
                                     {% for comments in recently_comments %}
@@ -90,5 +98,7 @@
     <div class="container power">
         <span class="text-muted">Power by Typeidea@the5fire</span>
     </div>
+    {% block javascript %}
+    {% endblock %}
 </footer>
 </body>
