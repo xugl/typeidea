@@ -3,16 +3,15 @@ from __future__ import unicode_literals
 
 from django.contrib import admin
 
+import xadmin
 from .models import Comment
-from typeidea.custom_site import custom_site
-from typeidea.custom_admin import BaseOwnerAdmin
+from typeidea.adminx import BaseOwnerAdmin
 from django.utils.html import format_html
 from django.core.urlresolvers import reverse
 
 from adminforms import  CommentAdminForm
 
-@admin.register(Comment,site=custom_site)
-class CommentAdmin(BaseOwnerAdmin):
+class CommentAdmin(object):
     list_display = [
         'target','content','nickname','website',
         'email','created_timed_show','operator'
@@ -39,5 +38,8 @@ class CommentAdmin(BaseOwnerAdmin):
             reverse("cus_admin:comment_comment_delete",args=(obj.id,))
         )
     operator.short_description = "操作"
+
+xadmin.site.register(Comment,CommentAdmin)
+
 
 

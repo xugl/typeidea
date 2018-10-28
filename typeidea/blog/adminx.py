@@ -1,23 +1,24 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+import xadmin
+
 from django.contrib import admin
 from django.utils.html import format_html
 from django.core.urlresolvers import reverse
 
 from .models import Post,Category,Tag
 
-from typeidea.custom_site import custom_site
-from typeidea.custom_admin import BaseOwnerAdmin
+from typeidea.adminx import BaseOwnerAdmin
 from .adminforms import  PostAdminForm,CategoryAdminForm,TagAdminForm
 
-@admin.register(Post,site=custom_site)
 class PostAdmin(BaseOwnerAdmin):
     list_display = [
         'title','category','status_show','status','pv','uv',
         'owner','created_time','operator'
     ]
     #list_display_links = ['category', 'status']
+    exclude =('html','owner','pv','uv')
     form = PostAdminForm
     list_filter = ['category']
     search_fields = ['title','category__name','owner__username']
@@ -49,6 +50,17 @@ class PostAdmin(BaseOwnerAdmin):
             'fields': ('tags',),
         }),
     )
+    # form_layout = (
+    #     Fieldset(
+    #         "基础信息",
+    #         'title',
+    #         'desc',
+    #         Row('category', 'status', 'is_markdown'),
+    #         'content',
+    #         'tags',
+    #     ),
+    # )
+
     filter_horizontal = ('tags',)    #多对多字段的管理  横向
     #filter_vertical = ('tags',)     #多对多字段的管理  竖向
 
@@ -61,6 +73,7 @@ class PostAdmin(BaseOwnerAdmin):
     operator.short_description = '操作'
     operator.empty_value_display = '???'
 
+xadmin.site.register(Post,PostAdmin)
 
 
 class PostInlineAdmin(admin.TabularInline):
@@ -71,7 +84,6 @@ class PostInlineAdmin(admin.TabularInline):
     model = Post
 
 
-@admin.register(Category,site=custom_site)
 class CategoryAdmin(BaseOwnerAdmin):
     # inlines = [
     #     PostInlineAdmin
@@ -113,10 +125,9 @@ class CategoryAdmin(BaseOwnerAdmin):
     operator.short_description = '操作'
     operator.empty_value_display = '???'
 
+xadmin.site.register(Category,CategoryAdmin)
 
 
-
-@admin.register(Tag,site=custom_site)
 class TagAdmin(BaseOwnerAdmin):
     list_display = [
         'name','status','status_show','owner',
@@ -159,8 +170,6 @@ class TagAdmin(BaseOwnerAdmin):
     operator.short_description = '操作'
     operator.empty_value_display = '???'
 
+xadmin.site.register(Tag,TagAdmin)
 
-#admin.site.register(Post,PostAdmin)
-#admin.site.register(Category,CategoryAdmin)
-#admin.site.register(Tag,TagAdmin)
 

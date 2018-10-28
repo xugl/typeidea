@@ -16,12 +16,17 @@ Including another URLconf
 #####the5fire/the5fire@123456
 
 from django.conf.urls import url
-from django.contrib import admin
-from custom_site import custom_site
 from blog.views import IndexView,CategoryView,TagView,PostView,AuthorView
+
+import xadmin
+xadmin.autodiscover()
+from xadmin.plugins import xversion
+xversion.register_models()
 
 from config.views import LinkView
 from comment.views import CommentView
+from typeidea import adminx  #NOQA
+
 
 urlpatterns = [
     url(r'^$',IndexView.as_view(),name='index'),
@@ -31,6 +36,5 @@ urlpatterns = [
     url(r'^post/(?P<pk>\d+)/$',PostView.as_view() ,name='detail'),
     url(r'^links/$', LinkView.as_view(),name='links'),
     url(r'^comment/$', CommentView.as_view(), name='comment'),
-    url(r'^admin/', admin.site.urls),
-    url(r'^cust_admin/', custom_site.urls),
+    url(r'^admin/', xadmin.site.urls),
 ]

@@ -24,7 +24,9 @@ INSTALLED_APPS = [
     'config',
     'comment',
     'typeidea',
-
+    'xadmin',
+    'crispy_forms',
+    'reversion',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -125,4 +127,7 @@ TEMPLATES = [
     },
 ]
 
+
+XADMIN_TITLE = 'Typeidea'
+XADMIN_FOOTER_TITLE = 'typeidea @by the5fire'
 

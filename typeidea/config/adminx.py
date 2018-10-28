@@ -1,21 +1,19 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.contrib import admin
 
 from django.utils.html import format_html
 from django.core.urlresolvers import reverse
 
 from .models import Link, SideBar
 
-from typeidea.custom_site import custom_site
-from typeidea.custom_admin import BaseOwnerAdmin
+import xadmin
+from typeidea.adminx import BaseOwnerAdmin
 
 from adminforms import LinkAdminForm,SideBarAdminForm
 
 
-@admin.register(Link, site=custom_site)
-class LinkAdmin(BaseOwnerAdmin):
+class LinkAdmin(object):
     form = LinkAdminForm
     actions_on_bottom = True
     actions_on_top = True
@@ -48,10 +46,12 @@ class LinkAdmin(BaseOwnerAdmin):
             reverse("cus_admin:config_link_delete", args=(obj.id,))
         )
 
+xadmin.site.register(Link, LinkAdmin)
 
 
 
-@admin.register(SideBar,site=custom_site)
+
+
 class SideBarAdmin(BaseOwnerAdmin):
     actions_on_bottom = True
     actions_on_top = True
@@ -75,3 +75,6 @@ class SideBarAdmin(BaseOwnerAdmin):
             reverse("cus_admin:config_sidebar_delete", args=(obj.id,))
         )
     operator.short_description = "操作"
+
+xadmin.site.register(SideBar,SideBarAdmin)
+
