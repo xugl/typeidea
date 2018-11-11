@@ -2,6 +2,7 @@
 
 import os
 
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -24,9 +25,19 @@ INSTALLED_APPS = [
     'config',
     'comment',
     'typeidea',
+
+    'dal',
+    'dal_select2',
+
+    'ckeditor',
+    'ckeditor_uploader',
+
+    'rest_framework',
+
     'xadmin',
     'crispy_forms',
     'reversion',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -81,10 +92,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
-
 LANGUAGE_CODE = 'zh-hans'
 
 TIME_ZONE = 'Asia/Shanghai'
@@ -95,10 +104,8 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
-
 
 THEME = 'themes/default'
 #STATIC_ROOT='/tmp/static'
@@ -131,3 +138,13 @@ TEMPLATES = [
 XADMIN_TITLE = 'Typeidea'
 XADMIN_FOOTER_TITLE = 'typeidea @by the5fire'
 
+
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+CKEDITOR_UPLOAD_PATH = "article_images"
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 3
+}

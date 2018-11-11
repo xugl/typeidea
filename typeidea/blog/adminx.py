@@ -171,5 +171,3 @@ class TagAdmin(BaseOwnerAdmin):
     operator.empty_value_display = '???'
 
 xadmin.site.register(Tag,TagAdmin)
-
-
