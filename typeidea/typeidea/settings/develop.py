@@ -20,7 +20,6 @@ INSTALLED_APPS += [
     # 'raven.contrib.django.raven_compat',
 ]
 
-
 MIDDLEWARE += [
     'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
@@ -34,10 +33,11 @@ DEBUG_TOOLBAR_CONFIG = {
 INTERNAL_IPS = ['192.168.28.141']
 
 
+
 CACHES = {
-    'default': {
-        'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://127.0.0.1:6379/0',
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/2",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
             "PARSER_CLASS": "redis.connection.HiredisParser",

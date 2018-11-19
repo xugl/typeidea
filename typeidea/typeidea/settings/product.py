@@ -2,7 +2,7 @@
 
 from  .base import *   # noqa
 
-DEBUG = False
+DEBUG = True
 
 
 ALLOWED_HOSTS = ['*']
@@ -20,10 +20,28 @@ DATABASES = {
     }
 }
 
+INSTALLED_APPS += [
+    'debug_toolbar',
+    # 'raven.contrib.django.raven_compat',
+]
+
+MIDDLEWARE += [
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
+]
+
+DEBUG_TOOLBAR_CONFIG = {
+        'JQUERY_URL': '//cdn.bootcss.com/jquery/2.1.4/jquery.min.js',
+        'SHOW_COLLAPSED': True,
+        'SHOW_TOOLBAR_CALLBACK': lambda x: True,
+}
+
+INTERNAL_IPS = ['192.168.28.141']
+
+
 CACHES = {
-    'default': {
-        'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://127.0.0.1:6379/1',
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/1",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
             "PARSER_CLASS": "redis.connection.HiredisParser",
