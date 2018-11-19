@@ -14,21 +14,22 @@ from comment.models import Comment
 from comment.forms import CommentForm
 from comment.views import CommentShowMixin
 
-def cache_it(func):
-    def wrapper(self,*args,**kwargs):
-        key = repr((func.__name__,args,kwargs))
-        result = cache.get(key)
-        if result:
-            print("hit cache")
-            return result
-        print("hit db")
-        result = func(self,*args,**kwargs)
-        cache.set(key,result,60 * 5)
-        return result
-    return wrapper
+
+# def cache_it(func):
+#     def wrapper(self,*args,**kwargs):
+#         key = repr((func.__name__,args,kwargs))
+#         result = cache.get(key)
+#         if result:
+#             print("hit cache")
+#             return result
+#         print("hit db")
+#         result = func(self,*args,**kwargs)
+#         cache.set(key,result,60 * 5)
+#         return result
+#     return wrapper
 
 class CommonMixin(object):
-    #@cache_it
+    #@cache_it()
     def get_context_data(self,**kwargs):
         categories = Category.objects.filter(status=1)  # 可用状态  todo: fix magic number
         nav_cates = []
